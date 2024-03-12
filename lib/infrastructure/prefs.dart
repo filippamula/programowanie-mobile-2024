@@ -1,0 +1,1 @@
+const String USER_EMAIL = 'USER_EMAIL';
