@@ -14,18 +14,20 @@ class LoginTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextField(
+      style: const TextStyle(color: Colors.white),
       controller: controller,
       obscureText: obscureText,
       decoration: InputDecoration(
           enabledBorder: OutlineInputBorder(
               borderSide: BorderSide(color: Colors.black.withOpacity(0.3)),
-              borderRadius: BorderRadius.circular(10)),
+              borderRadius: BorderRadius.circular(20)),
           focusedBorder: OutlineInputBorder(
               borderSide: BorderSide(color: Colors.white.withOpacity(0.5)),
-              borderRadius: BorderRadius.circular(10)),
+              borderRadius: BorderRadius.circular(20)),
           fillColor: Colors.white.withOpacity(0.1),
           filled: true,
-          hintText: placeHolder),
+          hintText: placeHolder,
+      hintStyle: TextStyle(color: Colors.white.withOpacity(0.5))),
     );
   }
 }
