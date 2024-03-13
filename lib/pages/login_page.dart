@@ -6,24 +6,42 @@ import 'package:streaming_shared_preferences/streaming_shared_preferences.dart';
 
 import '../components/login_text_field.dart';
 
-class LoginPage extends StatelessWidget {
-  LoginPage({super.key});
+class LoginPage extends StatefulWidget {
+  const LoginPage({super.key});
 
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
   final emailController = TextEditingController();
+
   final passwordController = TextEditingController();
 
   final prefs = StreamingSharedPreferences.instance;
+
   final client = HttpClient();
 
+  var errorMessage = '';
+
   void signInUser() async {
-    //todo some progress indicator
-
-    var users = await client.fetchUsers();
-    if (users.map((e) => e.email).contains(emailController.text)) {
-      prefs.then((prefs) => prefs.setString(USER_EMAIL, emailController.text));
+    try {
+      var users = await client.fetchUsers();
+      if (users.map((e) => e.email).contains(emailController.text)) {
+        prefs
+            .then((prefs) => prefs.setString(USER_EMAIL, emailController.text));
+      } else {
+        showError('Invalid credentials');
+      }
+    } catch (exception) {
+      showError('Error occurred');
     }
+  }
 
-    //todo display error
+  void showError(String message) {
+    setState(() {
+      errorMessage = message;
+    });
   }
 
   @override
@@ -72,8 +90,23 @@ class LoginPage extends StatelessWidget {
                     obscureText: true,
                   ),
                 ),
-                const SizedBox(
-                  height: 20,
+                Row(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 25),
+                      child: SizedBox(
+                        height: 30,
+                        child: Padding(
+                          padding: const EdgeInsets.all(3.0),
+                          child: Text(errorMessage,
+                              style: TextStyle(
+                                  color: Colors.orange.shade400,
+                                  fontWeight: FontWeight.bold,
+                              )),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
                 Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 25),
