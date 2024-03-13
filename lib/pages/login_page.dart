@@ -102,7 +102,7 @@ class _LoginPageState extends State<LoginPage> {
                           padding: const EdgeInsets.all(3.0),
                           child: Text(errorMessage,
                               style: TextStyle(
-                                color: Colors.orange.shade400,
+                                color: Colors.orange.shade300,
                                 fontWeight: FontWeight.bold,
                               )),
                         ),
