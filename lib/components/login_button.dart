@@ -20,15 +20,13 @@ class _LoginButtonState extends State<LoginButton> {
           setState(() {
             _isLoading = true;
           });
-          widget.onTap?.call();
-          Future.delayed(
-              const Duration(milliseconds: 700),
-              () => setState(() {
-                    _isLoading = false;
-                  }));
+          Future function = widget.onTap?.call();
+          function.then((value) => setState(() {
+                _isLoading = false;
+              }));
         },
         child: Container(
-          height: 70,
+            height: 70,
             padding: const EdgeInsets.all(15),
             decoration: BoxDecoration(
                 color: Colors.grey.shade100,

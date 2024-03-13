@@ -24,10 +24,12 @@ class _LoginPageState extends State<LoginPage> {
 
   var errorMessage = '';
 
-  void signInUser() async {
+  Future signInUser() async {
     try {
       var users = await client.fetchUsers();
-      if (users.map((e) => e.email).contains(emailController.text)) {
+      if (users
+          .map((e) => e.email.toLowerCase())
+          .contains(emailController.text.toLowerCase())) {
         prefs
             .then((prefs) => prefs.setString(USER_EMAIL, emailController.text));
       } else {
@@ -100,8 +102,8 @@ class _LoginPageState extends State<LoginPage> {
                           padding: const EdgeInsets.all(3.0),
                           child: Text(errorMessage,
                               style: TextStyle(
-                                  color: Colors.orange.shade400,
-                                  fontWeight: FontWeight.bold,
+                                color: Colors.orange.shade400,
+                                fontWeight: FontWeight.bold,
                               )),
                         ),
                       ),
