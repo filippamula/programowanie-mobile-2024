@@ -33,7 +33,7 @@ class _LoginButtonState extends State<LoginButton> {
                 borderRadius: BorderRadius.circular(20)),
             child: Center(
                 child: _isLoading
-                    ? const CircularProgressIndicator()
+                    ? const CircularProgressIndicator(color: Colors.indigoAccent,)
                     : Text(
                         widget.text,
                         style: const TextStyle(
