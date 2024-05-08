@@ -38,6 +38,8 @@ class _LoginPageState extends State<LoginPage> {
     } catch (exception) {
       showError('Error occurred');
     }
+
+    // prefs.then((prefs) => prefs.setString(USER_EMAIL, 'test')); //todo: delete workaround !!
   }
 
   void showError(String message) {
