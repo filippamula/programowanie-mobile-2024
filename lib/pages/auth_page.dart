@@ -9,7 +9,7 @@ class AuthPage extends StatelessWidget {
 
   Future<Stream<String>> getLoggedUserEmail() async {
     var prefs = await StreamingSharedPreferences.instance;
-    return prefs.getString(USER_EMAIL, defaultValue: '');
+    return prefs.getString(USER_ID, defaultValue: '');
   }
 
   @override

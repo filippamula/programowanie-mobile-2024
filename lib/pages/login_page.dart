@@ -27,19 +27,16 @@ class _LoginPageState extends State<LoginPage> {
   Future signInUser() async {
     try {
       var users = await client.fetchUsers();
-      if (users
-          .map((e) => e.email.toLowerCase())
-          .contains(emailController.text.toLowerCase())) {
-        prefs
-            .then((prefs) => prefs.setString(USER_EMAIL, emailController.text));
-      } else {
-        showError('Invalid credentials');
-      }
+      var user = users
+          .where((e) => e.email == emailController.text.toLowerCase())
+          .first;
+      prefs.then((prefs) => prefs.setString(USER_ID, user.id.toString()));
     } catch (exception) {
       showError('Error occurred');
     }
 
-    // prefs.then((prefs) => prefs.setString(USER_EMAIL, 'test')); //todo: delete workaround !!
+    // prefs.then(
+    //     (prefs) => prefs.setString(USER_ID, '1')); //todo: delete workaround !!
   }
 
   void showError(String message) {

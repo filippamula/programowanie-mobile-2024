@@ -21,4 +21,14 @@ class HttpClient {
     }
     throw Exception('Failed to fetch users');
   }
+
+  Future<User> fetchUser(String id) async {
+    final uri = Uri.parse("$url$fetchUsersPath/$id");
+    final response = await http.get(uri);
+
+    if (response.statusCode == 200) {
+      return User.fromJson(jsonDecode(response.body));
+    }
+    throw Exception('Failed to fetch user');
+  }
 }
