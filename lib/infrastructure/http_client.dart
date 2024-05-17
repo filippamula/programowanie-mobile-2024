@@ -1,7 +1,9 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
+import 'package:jsonplaceholder_app/model/album.dart';
 import 'package:jsonplaceholder_app/model/comment.dart';
+import 'package:jsonplaceholder_app/model/photo.dart';
 import 'package:jsonplaceholder_app/model/post.dart';
 
 import '../model/user.dart';
@@ -11,6 +13,8 @@ class HttpClient {
   static const String usersPath = '/users';
   static const String postsPath = '/posts';
   static const String commentsPath = '/comments';
+  static const String albumsPath = '/albums';
+  static const String photosPath = '/photos';
 
   Future<List<User>> fetchUsers() async {
     final uri = Uri.parse(url + usersPath);
@@ -86,5 +90,33 @@ class HttpClient {
       );
     }
     throw Exception('Failed to fetch comments');
+  }
+
+  Future<List<Album>> fetchAlbums() async {
+    final uri = Uri.parse(url + albumsPath);
+    final response = await http.get(uri);
+
+    if (response.statusCode == 200) {
+      List<Album> albums = [];
+      for (var album in jsonDecode(response.body)) {
+        albums.add(Album.fromJson(album));
+      }
+      return albums;
+    }
+    throw Exception('Failed to fetch albums');
+  }
+
+  Future<List<Photo>> fetchPhotos(int id) async {
+    final uri = Uri.parse('$url$photosPath?albumId=$id');
+    final response = await http.get(uri);
+
+    if (response.statusCode == 200) {
+      List<Photo> photos = [];
+      for (var photo in jsonDecode(response.body)) {
+        photos.add(Photo.fromJson(photo));
+      }
+      return photos;
+    }
+    throw Exception('Failed to fetch photos');
   }
 }

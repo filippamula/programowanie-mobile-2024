@@ -1,28 +1,27 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:jsonplaceholder_app/infrastructure/http_client.dart';
+import 'package:jsonplaceholder_app/model/album.dart';
+import 'package:jsonplaceholder_app/pages/single_album_page.dart';
 
-import '../infrastructure/http_client.dart';
-import '../model/post.dart';
-import '../pages/single_post_page.dart';
-
-class PostComponent extends StatefulWidget {
-  final Post post;
+class AlbumComponent extends StatefulWidget {
+  final Album album;
   final bool redirectOnTap;
 
-  const PostComponent(
-      {super.key, required this.post, this.redirectOnTap = true});
+  const AlbumComponent(
+      {super.key, required this.album, required this.redirectOnTap});
 
   @override
-  State<PostComponent> createState() => _PostComponentState();
+  State<AlbumComponent> createState() => _AlbumComponentState();
 }
 
-class _PostComponentState extends State<PostComponent> {
+class _AlbumComponentState extends State<AlbumComponent> {
   final client = HttpClient();
   var authorName = '';
 
   void setAuthor() async {
     client
-        .fetchUser(widget.post.userId.toString())
+        .fetchUser(widget.album.userId.toString())
         .then((value) => setState(() {
               authorName = value.name;
             }));
@@ -40,8 +39,8 @@ class _PostComponentState extends State<PostComponent> {
           Navigator.push(
               context,
               CupertinoPageRoute(
-                  builder: (context) =>
-                      SinglePostPage(post: widget.post, author: authorName)));
+                  builder: (context) => SingleAlbumPage(
+                      album: widget.album, author: authorName)));
         }
       },
       child: Container(
@@ -71,20 +70,9 @@ class _PostComponentState extends State<PostComponent> {
                 ],
               ),
               const SizedBox(height: 5),
-              Column(
-                children: [
-                  Container(
-                      constraints:
-                          const BoxConstraints(minWidth: double.infinity),
-                      child: Text(widget.post.title)),
-                  const SizedBox(height: 10),
-                  Container(
-                    constraints:
-                        const BoxConstraints(minWidth: double.infinity),
-                    child: Text(widget.post.body),
-                  )
-                ],
-              )
+              Container(
+                  constraints: const BoxConstraints(minWidth: double.infinity),
+                  child: Text(widget.album.title)),
             ]),
           )),
     );
