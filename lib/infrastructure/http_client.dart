@@ -8,12 +8,12 @@ import '../model/user.dart';
 
 class HttpClient {
   static const String url = 'https://jsonplaceholder.typicode.com';
-  static const String fetchUsersPath = '/users';
-  static const String fetchPostsPath = '/posts';
-  static const String fetchCommentsPath = '/comments';
+  static const String usersPath = '/users';
+  static const String postsPath = '/posts';
+  static const String commentsPath = '/comments';
 
   Future<List<User>> fetchUsers() async {
-    final uri = Uri.parse(url + fetchUsersPath);
+    final uri = Uri.parse(url + usersPath);
     final response = await http.get(uri);
 
     if (response.statusCode == 200) {
@@ -27,7 +27,7 @@ class HttpClient {
   }
 
   Future<User> fetchUser(String id) async {
-    final uri = Uri.parse("$url$fetchUsersPath/$id");
+    final uri = Uri.parse("$url$usersPath/$id");
     final response = await http.get(uri);
 
     if (response.statusCode == 200) {
@@ -37,7 +37,7 @@ class HttpClient {
   }
 
   Future<List<Post>> fetchPosts() async {
-    final uri = Uri.parse(url + fetchPostsPath);
+    final uri = Uri.parse(url + postsPath);
     final response = await http.get(uri);
 
     if (response.statusCode == 200) {
@@ -51,7 +51,7 @@ class HttpClient {
   }
 
   Future<List<Comment>> fetchComments(int id) async {
-    final uri = Uri.parse('$url$fetchCommentsPath?postId=$id');
+    final uri = Uri.parse('$url$commentsPath?postId=$id');
     final response = await http.get(uri);
 
     if (response.statusCode == 200) {
@@ -60,6 +60,30 @@ class HttpClient {
         comments.add(Comment.fromJson(comment));
       }
       return comments;
+    }
+    throw Exception('Failed to fetch comments');
+  }
+
+  Future<Comment> addComment(String comment, int postId, String email) async {
+    final uri = Uri.parse(url + commentsPath);
+    final response = await http.post(uri,
+        headers: <String, String>{
+          'ContentType': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, dynamic>{
+          "postId": postId,
+          "body": comment,
+          "email": email
+        }));
+
+    if (response.statusCode == 201) {
+      return Comment(
+        postId: postId,
+        id: jsonDecode(response.body)['id'],
+        name: '',
+        email: email,
+        body: comment,
+      );
     }
     throw Exception('Failed to fetch comments');
   }
