@@ -119,4 +119,20 @@ class HttpClient {
     }
     throw Exception('Failed to fetch photos');
   }
+
+  Future<Post> addPost(String title, String body, int userId) async {
+    final uri = Uri.parse(url + postsPath);
+    final response = await http.post(uri,
+        body: jsonEncode(
+            <String, dynamic>{"userId": userId, "title": title, "body": body}));
+
+    if (response.statusCode == 201) {
+      return Post(
+          userId: userId,
+          id: jsonDecode(response.body)['id'],
+          title: title,
+          body: body);
+    }
+    throw Exception('Failed to add post');
+  }
 }

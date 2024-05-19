@@ -27,8 +27,11 @@ class _AlbumsPageState extends State<AlbumsPage> {
     if (!_albumsFetched) {
       setAlbums();
     }
-    return SafeArea(
-        child: SingleChildScrollView(
+    return Scaffold(
+        appBar: AppBar(
+          title: const Text('Posts'),
+        ),
+        body: SingleChildScrollView(
       child: Column(
         children: albums
             .map((e) => Padding(

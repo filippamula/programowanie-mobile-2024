@@ -1,6 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:jsonplaceholder_app/components/post_component.dart';
 import 'package:jsonplaceholder_app/infrastructure/http_client.dart';
+import 'package:jsonplaceholder_app/pages/add_post_page.dart';
 
 import '../model/post.dart';
 
@@ -28,14 +30,28 @@ class _PostsPageState extends State<PostsPage> {
     if (!_postsFetched) {
       setPosts();
     }
-    return SafeArea(
-        child: SingleChildScrollView(
-      child: Column(
-        children: posts.map((e) => Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: PostComponent(post: e),
-        )).toList(),
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Posts'),
+        actions: [
+          IconButton(
+              onPressed: () {
+                Navigator.push(context,
+                    CupertinoPageRoute(builder: (context) => AddPostPage()));
+              },
+              icon: const Icon(Icons.add))
+        ],
       ),
-    ));
+      body: SingleChildScrollView(
+        child: Column(
+          children: posts
+              .map((e) => Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: PostComponent(post: e),
+                  ))
+              .toList(),
+        ),
+      ),
+    );
   }
 }
