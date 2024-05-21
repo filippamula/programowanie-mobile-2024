@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:http/http.dart' as http;
 import 'package:jsonplaceholder_app/model/album.dart';
@@ -132,6 +133,23 @@ class HttpClient {
           id: jsonDecode(response.body)['id'],
           title: title,
           body: body);
+    }
+    throw Exception('Failed to add post');
+  }
+
+  Future<Album> addAlbum(int userId,String title, List<File> files) async {
+    final uri = Uri.parse(url + albumsPath);
+    final response = await http.post(uri,
+    body: jsonEncode(<String, dynamic>{
+      "userId": userId,
+      "title": title
+    }));
+
+    if (response.statusCode == 201) {
+      return Album(
+          userId: userId,
+          id: jsonDecode(response.body)['id'],
+          title: title);
     }
     throw Exception('Failed to add post');
   }

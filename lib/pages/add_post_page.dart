@@ -18,13 +18,13 @@ class _AddPostPageState extends State<AddPostPage> {
   final prefs = StreamingSharedPreferences.instance;
 
   Future addPost() async {
-    var loggedUserId =
-        await prefs.then((prefs) => prefs.getInt(USER_ID, defaultValue: -1));
+    var loggedUserId = await prefs
+        .then((prefs) => prefs.getInt(USER_ID, defaultValue: -1).getValue());
     if (loggedUserId == -1) {
       throw Exception('Error during getting logged user id');
     }
     client
-        .addPost(titleController.text, bodyController.text, 1)
+        .addPost(titleController.text, bodyController.text, loggedUserId)
         .then((value) => Navigator.pop(context));
   }
 

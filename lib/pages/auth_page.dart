@@ -7,9 +7,9 @@ import 'package:streaming_shared_preferences/streaming_shared_preferences.dart';
 class AuthPage extends StatelessWidget {
   const AuthPage({super.key});
 
-  Future<Stream<String>> getLoggedUserEmail() async {
+  Future<Stream<int>> getLoggedUserEmail() async {
     var prefs = await StreamingSharedPreferences.instance;
-    return prefs.getString(USER_ID, defaultValue: '');
+    return prefs.getInt(USER_ID, defaultValue: -1);
   }
 
   @override
@@ -18,11 +18,11 @@ class AuthPage extends StatelessWidget {
         body: FutureBuilder(
             future: getLoggedUserEmail(),
             builder: (context, snapshot) {
-              return StreamBuilder<String>(
+              return StreamBuilder<int>(
                   stream: snapshot.data,
                   builder: (context, snapshot) {
-                    if (snapshot.data == "" || snapshot.data == null) {
-                      return LoginPage();
+                    if (snapshot.data == -1 || snapshot.data == null) {
+                      return const LoginPage();
                     }
                     return const NavBarPage();
                   });
