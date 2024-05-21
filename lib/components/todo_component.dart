@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:jsonplaceholder_app/infrastructure/http_client.dart';
 import 'package:jsonplaceholder_app/model/todo.dart';
 
 class TodoComponent extends StatefulWidget {
@@ -11,8 +12,24 @@ class TodoComponent extends StatefulWidget {
 }
 
 class _TodoComponentState extends State<TodoComponent> {
+  final client = HttpClient();
+  var _isLoading = false;
+  bool? _completed;
+
+  void setTodoCompleted(bool completed) async {
+    setState(() {
+      _isLoading = true;
+    });
+    final todoChanged = await client.editTodo(widget.todo, completed);
+    setState(() {
+      _completed = todoChanged.completed;
+      _isLoading = false;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    _completed ??= widget.todo.completed;
     return Container(
         constraints: const BoxConstraints(minWidth: double.infinity),
         decoration: BoxDecoration(
@@ -27,18 +44,42 @@ class _TodoComponentState extends State<TodoComponent> {
                   decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(100)),
-                  child: Padding(
-                    padding: const EdgeInsets.all(2.0),
-                    child: Builder(builder: (context) {
-                      if (widget.todo.completed) {
-                        return const Icon(Icons.done);
-                      }
-                      return const Icon(
-                        Icons.done,
-                        color: Colors.white,
+                  child: Builder(builder: (context) {
+                    if (_isLoading) {
+                      return const SizedBox(
+                        height: 45,
+                        width: 45,
+                        child: Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: CircularProgressIndicator(
+                            color: Colors.indigoAccent,
+                          ),
+                        ),
                       );
-                    }),
-                  )),
+                    }
+                    if (_completed ??= false) {
+                      return SizedBox(
+                        height: 45,
+                        width: 45,
+                        child: IconButton(
+                          icon: const Icon(Icons.done),
+                          onPressed: () {
+                            setTodoCompleted(false);
+                          },
+                        ),
+                      );
+                    }
+                    return SizedBox(
+                      height: 45,
+                      width: 45,
+                      child: IconButton(
+                        icon: const Icon(Icons.close),
+                        onPressed: () {
+                          setTodoCompleted(true);
+                        },
+                      ),
+                    );
+                  })),
               const SizedBox(
                 width: 10,
               ),

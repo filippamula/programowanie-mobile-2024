@@ -176,6 +176,26 @@ class HttpClient {
           title: title,
           completed: false);
     }
-    throw Exception('Failed to add post');
+    throw Exception('Failed to add todo');
+  }
+
+  Future<Todo> editTodo(Todo todo, bool completed) async {
+    final uri = Uri.parse('$url$todosPath/${todo.id}');
+    final response = await http.put(uri,
+        body: jsonEncode(<String, dynamic>{
+          "userId": todo.userId,
+          "id": todo.id,
+          "title": todo.title,
+          "completed": completed
+        }));
+
+    if (response.statusCode == 200) {
+      return Todo(
+          userId: todo.userId,
+          id: jsonDecode(response.body)['id'],
+          title: todo.title,
+          completed: completed);
+    }
+    throw Exception('Failed to edit post');
   }
 }
