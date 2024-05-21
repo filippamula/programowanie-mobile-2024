@@ -6,6 +6,7 @@ import 'package:jsonplaceholder_app/model/album.dart';
 import 'package:jsonplaceholder_app/model/comment.dart';
 import 'package:jsonplaceholder_app/model/photo.dart';
 import 'package:jsonplaceholder_app/model/post.dart';
+import 'package:jsonplaceholder_app/model/todo.dart';
 
 import '../model/user.dart';
 
@@ -16,6 +17,7 @@ class HttpClient {
   static const String commentsPath = '/comments';
   static const String albumsPath = '/albums';
   static const String photosPath = '/photos';
+  static const String todosPath = '/todos';
 
   Future<List<User>> fetchUsers() async {
     final uri = Uri.parse(url + usersPath);
@@ -137,20 +139,29 @@ class HttpClient {
     throw Exception('Failed to add post');
   }
 
-  Future<Album> addAlbum(int userId,String title, List<File> files) async {
+  Future<Album> addAlbum(int userId, String title, List<File> files) async {
     final uri = Uri.parse(url + albumsPath);
     final response = await http.post(uri,
-    body: jsonEncode(<String, dynamic>{
-      "userId": userId,
-      "title": title
-    }));
+        body: jsonEncode(<String, dynamic>{"userId": userId, "title": title}));
 
     if (response.statusCode == 201) {
       return Album(
-          userId: userId,
-          id: jsonDecode(response.body)['id'],
-          title: title);
+          userId: userId, id: jsonDecode(response.body)['id'], title: title);
     }
     throw Exception('Failed to add post');
+  }
+
+  Future<List<Todo>> fetchTodos() async {
+    final uri = Uri.parse(url + todosPath);
+    final response = await http.get(uri);
+
+    if (response.statusCode == 200) {
+      List<Todo> todos = [];
+      for (var todo in jsonDecode(response.body)) {
+        todos.add(Todo.fromJson(todo));
+      }
+      return todos;
+    }
+    throw Exception('Failed to fetch todos');
   }
 }
