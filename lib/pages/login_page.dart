@@ -30,13 +30,13 @@ class _LoginPageState extends State<LoginPage> {
       var user = users
           .where((e) => e.email == emailController.text.toLowerCase())
           .first;
-      prefs.then((prefs) => prefs.setString(USER_ID, user.id.toString()));
+      prefs.then((prefs) => prefs.setInt(USER_ID, user.id));
     } catch (exception) {
       showError('Error occurred');
     }
 
     // prefs.then(
-    //     (prefs) => prefs.setString(USER_ID, '1')); //todo: delete workaround !!
+    //     (prefs) => prefs.setInt(USER_ID, 1)); //todo: delete workaround !!
   }
 
   void showError(String message) {
