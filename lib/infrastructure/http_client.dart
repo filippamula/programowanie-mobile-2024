@@ -33,7 +33,7 @@ class HttpClient {
     throw Exception('Failed to fetch users');
   }
 
-  Future<User> fetchUser(String id) async {
+  Future<User> fetchUser(int id) async {
     final uri = Uri.parse("$url$usersPath/$id");
     final response = await http.get(uri);
 

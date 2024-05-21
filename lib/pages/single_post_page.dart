@@ -34,9 +34,9 @@ class _SinglePostPageState extends State<SinglePostPage> {
 
   void addComment(String comment) async {
     var loggedUserId = await prefs
-        .then((prefs) => prefs.getString(USER_ID, defaultValue: "").getValue());
-    if (loggedUserId == "") {
-      throw Exception("");
+        .then((prefs) => prefs.getInt(USER_ID, defaultValue: -1).getValue());
+    if (loggedUserId == -1) {
+      throw Exception('Error during getting logged user id');
     }
 
     var loggedUserEmail =

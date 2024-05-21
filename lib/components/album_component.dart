@@ -21,7 +21,7 @@ class _AlbumComponentState extends State<AlbumComponent> {
 
   void setAuthor() async {
     client
-        .fetchUser(widget.album.userId.toString())
+        .fetchUser(widget.album.userId)
         .then((value) => setState(() {
               authorName = value.name;
             }));

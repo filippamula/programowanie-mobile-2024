@@ -21,7 +21,10 @@ class _SettingsPageState extends State<SettingsPage> {
 
   void setLoggedUser() async {
     final prefs = await StreamingSharedPreferences.instance;
-    final loggedUserId = prefs.getString(USER_ID, defaultValue: '').getValue();
+    final loggedUserId = prefs.getInt(USER_ID, defaultValue: -1).getValue();
+    if (loggedUserId == -1) {
+      throw Exception('Error during getting logged user id');
+    }
     client.fetchUser(loggedUserId).then((value) => setState(() {
           userName = value.name;
         }));

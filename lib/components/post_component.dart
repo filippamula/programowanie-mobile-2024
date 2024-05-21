@@ -22,7 +22,7 @@ class _PostComponentState extends State<PostComponent> {
 
   void setAuthor() async {
     client
-        .fetchUser(widget.post.userId.toString())
+        .fetchUser(widget.post.userId)
         .then((value) => setState(() {
               authorName = value.name;
             }));
