@@ -36,8 +36,10 @@ class _PostsPageState extends State<PostsPage> {
         actions: [
           IconButton(
               onPressed: () {
-                Navigator.push(context,
-                    CupertinoPageRoute(builder: (context) => AddPostPage()));
+                Navigator.push(
+                    context,
+                    CupertinoPageRoute(
+                        builder: (context) => const AddPostPage()));
               },
               icon: const Icon(Icons.add))
         ],

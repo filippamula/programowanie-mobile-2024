@@ -92,33 +92,31 @@ class _AddAlbumPageState extends State<AddAlbumPage> {
                 const SizedBox(
                   height: 10,
                 ),
-                GestureDetector(
-                    onTap: addAlbum,
-                    child: SafeArea(
-                      child: GestureDetector(
-                        onTap: () {
-                          addAlbum().then((value) => Navigator.pop(context));
-                        },
-                        child: Container(
-                            height: 70,
-                            padding: const EdgeInsets.all(15),
-                            decoration: BoxDecoration(
-                                color: Colors.indigoAccent,
-                                borderRadius: BorderRadius.circular(20)),
-                            child: Center(
-                                child: _isLoading
-                                    ? const CircularProgressIndicator(
+                SafeArea(
+                  child: GestureDetector(
+                    onTap: () {
+                      addAlbum().then((value) => Navigator.pop(context));
+                    },
+                    child: Container(
+                        height: 70,
+                        padding: const EdgeInsets.all(15),
+                        decoration: BoxDecoration(
+                            color: Colors.indigoAccent,
+                            borderRadius: BorderRadius.circular(20)),
+                        child: Center(
+                            child: _isLoading
+                                ? const CircularProgressIndicator(
+                                    color: Colors.white,
+                                  )
+                                : const Text(
+                                    'Add',
+                                    style: TextStyle(
                                         color: Colors.white,
-                                      )
-                                    : const Text(
-                                        'Add',
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 20),
-                                      ))),
-                      ),
-                    ))
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20),
+                                  ))),
+                  ),
+                )
               ],
             ),
           ),

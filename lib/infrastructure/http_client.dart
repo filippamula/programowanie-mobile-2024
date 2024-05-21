@@ -164,4 +164,18 @@ class HttpClient {
     }
     throw Exception('Failed to fetch todos');
   }
+
+  Future<Todo> addTodo(int userId, String title) async {
+    final uri = Uri.parse(url + todosPath);
+    final response = await http.post(uri);
+
+    if (response.statusCode == 201) {
+      return Todo(
+          userId: userId,
+          id: jsonDecode(response.body)['id'],
+          title: title,
+          completed: false);
+    }
+    throw Exception('Failed to add post');
+  }
 }

@@ -1,7 +1,9 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:jsonplaceholder_app/components/todo_component.dart';
 import 'package:jsonplaceholder_app/infrastructure/http_client.dart';
 import 'package:jsonplaceholder_app/model/todo.dart';
+import 'package:jsonplaceholder_app/pages/add_todo_page.dart';
 
 class TodosPage extends StatefulWidget {
   const TodosPage({super.key});
@@ -30,7 +32,16 @@ class _TodosPageState extends State<TodosPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Todos'),
-        actions: [IconButton(onPressed: () {}, icon: const Icon(Icons.add))],
+        actions: [
+          IconButton(
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    CupertinoPageRoute(
+                        builder: (context) => const AddTodoPage()));
+              },
+              icon: const Icon(Icons.add))
+        ],
       ),
       body: SingleChildScrollView(
         child: Column(
